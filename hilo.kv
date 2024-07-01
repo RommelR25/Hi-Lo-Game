@@ -1,0 +1,367 @@
+WindowManager:
+    HiLoGame:
+    SecondPage:
+    PlayPage:
+    SettingsPage:
+    LeaderboardPage:
+
+<HiLoGame>:
+    name: "first"
+    FloatLayout:
+        Image:
+            source: "Hi-Lo_Background.png"
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        MDLabel:
+            text: "HI-LO"
+            font_size: 100  # Increased font size to 100
+            size: self.texture_size
+            halign: 'center'
+            pos_hint: {"center_x": 0.5, "center_y": 0.75}
+            theme_text_color: 'Custom'
+            text_color: 1, 1, 1, 1  # White color
+
+        MDLabel:
+            id: greeting
+            text: "What is your name?"
+            font_style: 'H5'
+            theme_text_color: 'Custom'
+            text_color: 1, 1, 1, 1  # White color
+            halign: 'center'
+            pos_hint: {"center_x": 0.5, "center_y": 0.65}
+
+        CustomMDTextField:
+            id: name_input
+            hint_text: "Type your name here"
+            multiline: False
+            padding_y: (25, 25)
+            size_hint: 0.5, None
+            height: "60dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.48}
+
+        MDRaisedButton:
+            id: enter_button
+            text: "ENTER!"
+            size_hint: 0.4, 0.1
+            font_size: 20
+            bold: True
+            md_bg_color: 0, 0.75, 0, 1
+            pos_hint: {"center_x": 0.5, "center_y": 0.29}
+            on_release: root.on_enter_pressed(name_input.text)
+
+<SecondPage>:
+    name: "second"
+    FloatLayout:
+        Image:
+            source: "Hi-Lo_Background.png"
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        MDLabel:
+            text: "HI-LO"
+            font_size: 100  # Increased font size to 100
+            size: self.texture_size
+            halign: 'center'
+            pos_hint: {"center_x": 0.5, "center_y": 0.75}
+            theme_text_color: 'Custom'
+            text_color: 1, 1, 1, 1  # White color
+
+        MDLabel:
+            id: greeting
+            text: ""
+            font_style: 'H4'
+            theme_text_color: 'Custom'
+            text_color: 1, 1, 1, 1  # White color
+            halign: 'center'
+            pos_hint: {"center_x": 0.5, "center_y": 0.6}
+
+        MDRaisedButton:
+            text: "Play"
+            size_hint: 0.4, 0.1
+            font_size: 20
+            bold: True
+            md_bg_color: 0, 0.75, 0, 1
+            pos_hint: {"center_x": 0.5, "center_y": 0.41}
+            on_release: root.start_game()
+
+        MDRaisedButton:
+            text: "Settings"
+            size_hint: 0.4, 0.1
+            font_size: 20
+            bold: True
+            md_bg_color: 0, 0.75, 0, 1
+            pos_hint: {"center_x": 0.5, "center_y": 0.30}
+            on_release: root.goto_settings()
+
+        MDRaisedButton:
+            text: "Leaderboards"
+            size_hint: 0.4, 0.1
+            font_size: 20
+            bold: True
+            md_bg_color: 0, 0.75, 0, 1
+            pos_hint: {"center_x": 0.5, "center_y": 0.19}
+            on_release: root.goto_leaderboard()
+
+
+<PlayPage>:
+    name: "play"
+
+    FloatLayout:
+        Image:
+            source: "Hi-Lo_Background.png"
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        AsyncImage:
+            id: current_card_image
+            source: ''
+            size_hint: (None, None)
+            size: dp(150), dp(200)
+            pos_hint: {'center_x': 0.3, 'center_y': 0.6}
+            scale_x: 1
+
+        AsyncImage:
+            id: next_card_image
+            source: ''
+            size_hint: (None, None)
+            size: dp(150), dp(200)
+            pos_hint: {'center_x': 0.7, 'center_y': 0.6}
+            scale_x: 1
+
+        MDLabel:
+            id: result_label
+            text: ""
+            font_size: 50
+            color: 1, 1, 1, 1
+            halign: 'center'
+            pos_hint: {"center_x": 0.5, "center_y": 0.8}
+
+        MDLabel:
+            id: card_label
+            text: "Card: "
+            font_size: 50
+            color: 1, 1, 1, 1
+            halign: 'center'
+            pos_hint: {"center_x": 0.3, "center_y": 0.3}
+
+        MDLabel:
+            id: next_card_label
+            text: "Next Card: "
+            font_size: 50
+            color: 1, 1, 1, 1
+            halign: 'center'
+            pos_hint: {"center_x": 0.7, "center_y": 0.3}
+
+        MDLabel:
+            id: money_label
+            text: "Money: $10000"
+            font_size: 50
+            color: 1, 1, 1, 1
+            halign: 'center'
+            pos_hint: {"center_x": 0.5, "center_y": 0.9}
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: None, None
+            size: dp(300), dp(50)
+            pos_hint: {"left": 0.02, "bottom": 0.02}
+            spacing: dp(20)
+
+            MDRaisedButton:
+                text: "Reshuffle"
+                size_hint: None, None
+                size: dp(150), dp(50)
+                pos_hint: {"left": 1, "bottom": 1}
+                on_release: root.reshuffle()
+                md_bg_color: 0, 0.75, 0, 1
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: None, None
+            size: dp(300), dp(100)
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: None, None
+            size: dp(300), dp(50)
+            pos_hint: {"center_x": 0.5, "center_y": 0.1}
+            spacing: dp(20)
+
+            MDRaisedButton:
+                text: "Hi"
+                size_hint: 1, 1
+                on_release: root.guess_higher()
+                md_bg_color: 0, 0.75, 0, 1
+
+            MDRaisedButton:
+                text: "Lo"
+                size_hint: 1, 1
+                on_release: root.guess_lower()
+                md_bg_color: 0, 0.75, 0, 1
+
+        MDRaisedButton:
+            text: "Back"
+            size_hint: 0.03, 0.03
+            font_size: 16
+            pos_hint: {"top": 0.98, "left": 0.02}
+            on_release: app.root.current = "second"
+            md_bg_color: 0, 0.75, 0, 1
+
+<SettingsPage>:
+    name: "settings"
+    FloatLayout:
+        Image:
+            source: "Hi-Lo_Background.png"
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.8, 0.7
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}  # Centering the main BoxLayout
+            spacing: dp(25)
+            canvas.before:
+                Color:
+                    rgba: 0, 0.50, 0, 1  # Green color
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [15, 15, 15, 15]
+
+            MDLabel:
+                text: "Settings Page"
+                font_size: 40
+                halign: 'center'
+                pos_hint: {"center_x": 0.5, "top": 0.95}  # Adjusted vertical position
+                theme_text_color: 'Custom'
+                text_color: 1, 1, 1, 1  # White color
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: 0.8
+                pos_hint: {"center_x": 0.5}  # Centering horizontally
+                spacing: dp(10)
+
+                MDLabel:
+                    text: "SFX:"
+                    font_size: 30
+                    halign: 'right'
+                    valign: 'middle'
+                    size_hint_x: None
+                    width: dp(60)  # Adjust width for alignment
+                    theme_text_color: 'Custom'
+                    text_color: 1, 1, 1, 1
+
+                MDSlider:
+                    id: sfx_slider
+                    min: 0
+                    max: 100
+                    value: 50
+                    height: dp(20)
+                    size_hint_x: 0.5
+                    pos_hint: {"center_x": 0.5}  # Centering horizontally
+                    on_value: app.on_sfx_slider_value(self, self.value)
+                    color: 0, 1, 0, 1
+                    color_inactive: 0, 0.5, 0, 1
+                    thumb_color_down: 0, 1, 0, 1
+                    thumb_color_normal: 0, 1, 0, 1
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: 0.8
+                pos_hint: {"center_x": 0.5}  # Centering horizontally
+                spacing: dp(10)
+
+                MDLabel:
+                    text: "BGM:"
+                    font_size: 30
+                    halign: 'right'
+                    valign: 'middle'
+                    size_hint_x: None
+                    width: dp(60)  # Adjust width for alignment
+                    theme_text_color: 'Custom'
+                    text_color: 1, 1, 1, 1
+
+                MDSlider:
+                    id: bgm_slider
+                    min: 0
+                    max: 100
+                    value: 50
+                    height: dp(20)
+                    size_hint_x: 0.5
+                    pos_hint: {"center_x": 0.5}  # Centering horizontally
+                    on_value: app.on_bgm_slider_value(self, self.value)
+                    color: 0, 1, 0, 1
+                    color_inactive: 0, 0.5, 0, 1
+                    thumb_color_down: 0, 1, 0, 1
+                    thumb_color_normal: 0, 1, 0, 1
+
+            MDRaisedButton:
+                text: "Back"
+                size_hint: 0.8, 0.1
+                font_size: 20
+                bold: True
+                md_bg_color: 0, 0.75, 0, 1
+                pos_hint: {"center_x": 0.5, "center_y": 0.2}  # Adjusted vertical position
+                on_release: app.root.current = "second"  # Navigate back to SecondPage
+
+<LeaderboardPage>:
+    name: "leaderboard"
+    FloatLayout:
+        Image:
+            source: "Hi-Lo_Background.png"
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.9, 0.8  # Adjusted width (0.9) and height (0.7)
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            spacing: dp(15)
+            canvas.before:
+                Color:
+                    rgba: 0, 0.50, 0, 1  # Green color
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [15, 15, 15, 15]
+
+            MDLabel:
+                text: "Leaderboard"
+                font_size: 40
+                halign: 'center'
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                theme_text_color: 'Custom'
+                text_color: 1, 1, 1, 1
+
+            ScrollView:
+                size_hint: 1, None  # Full width, no fixed height
+                height: root.height * 0.65  # Adjusted to take 65% of the screen height
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                BoxLayout:
+                    id: leaderboard_layout
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+
+            MDRaisedButton:
+                text: "Back"
+                size_hint: 0.2, 0.1
+                font_size: 20
+                bold: True
+                md_bg_color: 0, 0.75, 0, 1
+                pos_hint: {"center_x": 0.5, "center_y": 0.1}
+                on_release: app.root.current = "second"
